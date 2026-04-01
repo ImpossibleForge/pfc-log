@@ -71,7 +71,7 @@ Copy `license.key` into the same directory as your log files.
 ```bash
 docker run --rm \
   -v $(pwd):/data \
-  pfc-log:v3.3-final \
+  impossibleforge/pfc-log:v3.3 \
   compress /data/access.log /data/access.pfc
 ```
 
@@ -80,7 +80,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -v $(pwd):/data \
-  pfc-log:v3.3-final \
+  impossibleforge/pfc-log:v3.3 \
   decompress /data/access.pfc /data/restored.log
 ```
 
@@ -95,7 +95,7 @@ The restored file is byte-for-byte identical to the original.
 Compress a log file:
 
 ```bash
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   compress /data/access.log /data/access.pfc [OPTIONS]
 
 Options:
@@ -108,7 +108,7 @@ Options:
 Example with options:
 
 ```bash
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   compress /data/access.log /data/access.pfc --level max --verbose
 ```
 
@@ -117,7 +117,7 @@ docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
 Decompress a .pfc file:
 
 ```bash
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   decompress /data/access.pfc /data/restored.log
 ```
 
@@ -127,11 +127,11 @@ Show information about a compressed file:
 
 ```bash
 # Basic info (size, ratio, block count, timestamp range):
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   info /data/access.pfc
 
 # Detailed block structure:
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   info /data/access.pfc --blocks
 ```
 
@@ -150,15 +150,15 @@ Decompress a single block without touching the rest of the file:
 
 ```bash
 # To stdout (pipe-friendly):
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   seek-block 1 /data/access.pfc -
 
 # Filter on the fly:
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   seek-block 1 /data/access.pfc - | grep "ERROR"
 
 # To a file:
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   seek-block 1 /data/access.pfc /data/block1.log
 ```
 
@@ -172,26 +172,26 @@ Search for log lines within a specific time window. Only the relevant blocks are
 
 ```bash
 # Output to stdout:
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   query /data/access.pfc \
   --from "2025-03-01T00:00:00" \
   --to "2025-03-01T23:59:59"
 
 # Output to file:
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   query /data/access.pfc \
   --from "2025-03-01T00:00:00" \
   --to "2025-03-01T23:59:59" \
   --out /data/march1.log
 
 # Show block info only (no decompression, omit --out):
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   query /data/access.pfc \
   --from "2025-03-01T00:00:00" \
   --to "2025-03-01T23:59:59"
 
 # Decompress to stdout:
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   query /data/access.pfc \
   --from "2025-03-01T00:00:00" \
   --to "2025-03-01T23:59:59" \
@@ -217,7 +217,7 @@ The `default` preset is recommended for most use cases. Use `max` only when stor
 **Setting a preset:**
 
 ```bash
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   compress /data/access.log /data/access.pfc --level max
 ```
 
@@ -278,7 +278,7 @@ The index records the **timestamp range** covered by each block. This enables th
 **To compress without generating an index:**
 
 ```bash
-docker run --rm -v $(pwd):/data pfc-log:v3.3-final \
+docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
   compress /data/access.log /data/access.pfc --no-index
 ```
 
@@ -340,7 +340,7 @@ rclone link remote:my-bucket/logs/access.pfc
 # Time-range query (most common use case):
 docker run --rm \
   -v $(pwd):/data \
-  pfc-log:v3.3-final \
+  impossibleforge/pfc-log:v3.3 \
   s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
     --idx-url "https://my-bucket.s3.amazonaws.com/logs/access.pfc.idx?X-Amz-..." \
     --from "2025-03-01T00:00:00" --to "2025-03-01T23:59:59" \
@@ -348,13 +348,13 @@ docker run --rm \
 
 # Show file metadata without downloading data blocks:
 docker run --rm \
-  pfc-log:v3.3-final \
+  impossibleforge/pfc-log:v3.3 \
   s3-info "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..."
 
 # Fetch specific blocks by index:
 docker run --rm \
   -v $(pwd):/data \
-  pfc-log:v3.3-final \
+  impossibleforge/pfc-log:v3.3 \
   s3-fetch "https://my-bucket.s3.amazonaws.com/logs/access.pfc?X-Amz-..." \
     --blocks 2 3 --out /data/blocks23.log
 ```
@@ -491,7 +491,7 @@ Verify with `--network none`:
 ```bash
 docker run --rm --network none \
   -v $(pwd):/data \
-  pfc-log:v3.3-final \
+  impossibleforge/pfc-log:v3.3 \
   compress /data/access.log /data/access.pfc
 ```
 
@@ -527,7 +527,7 @@ PFC-Log is optimized for Apache/Nginx Common Log Format (CLF). Mixed formats wil
 Run with `--network none` as shown in the Privacy section. The tool functions identically.
 
 **Q: Does my compressed file work with future versions?**
-Yes. The .pfc format includes a version number. Future versions will always be able to read .pfc files created by v3.2.
+Yes. The .pfc format includes a version number. Future versions will always be able to read .pfc files created by v3.3.
 
 **Q: What is the file size overhead of the .pfc format?**
 22 bytes fixed header + 4 bytes per block. A 1 GB file with 32 blocks = 150 bytes overhead. Negligible.
@@ -537,14 +537,14 @@ Yes. The .pfc format includes a version number. Future versions will always be a
 ## Full Command Reference
 
 ```bash
-docker run pfc-log:v3.3-final --help
-docker run pfc-log:v3.3-final compress --help
-docker run pfc-log:v3.3-final decompress --help
-docker run pfc-log:v3.3-final info --help
-docker run pfc-log:v3.3-final seek-block --help
-docker run pfc-log:v3.3-final query --help
+docker run impossibleforge/pfc-log:v3.3 --help
+docker run impossibleforge/pfc-log:v3.3 compress --help
+docker run impossibleforge/pfc-log:v3.3 decompress --help
+docker run impossibleforge/pfc-log:v3.3 info --help
+docker run impossibleforge/pfc-log:v3.3 seek-block --help
+docker run impossibleforge/pfc-log:v3.3 query --help
 ```
 
 ---
 
-*PFC-Log v3.2 | ImpossibleForge | impossibleforge@gmail.com*
+*PFC-Log v3.3 | ImpossibleForge | impossibleforge@gmail.com*
