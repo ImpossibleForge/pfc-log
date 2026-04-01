@@ -69,8 +69,7 @@ docker run --rm -v $(pwd):/data impossibleforge/pfc-log:v3.3 \
 
 PFC-Log is **proprietary software**. A free 30-day trial is available.
 
-📧 **Request trial:** impossibleforge@gmail.com
-🛒 **Buy license:** [impossibleforge.lemonsqueezy.com/buy/pfc-log](https://impossibleforge.lemonsqueezy.com/buy/pfc-log)
+📧 **Trial or license inquiry:** impossibleforge@gmail.com
 
 Without a valid `license.key` file, the tool displays:
 ```
